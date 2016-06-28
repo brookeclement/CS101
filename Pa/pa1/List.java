@@ -62,17 +62,12 @@ public class List {
         return index;
     }
 
-
-    //-------------------------
-    // Lookup
-    //-------------------------
-
     // Returns front element.
     // Pre: length()>0
     public int front() {
         if( this.length()==0 ){
             throw new RuntimeException(
-                "Queue Error: front() called on empty Queue");
+                "List Error: front() called on empty List");
         }
         return front.data;
     }
@@ -82,7 +77,7 @@ public class List {
     public int back() {
         if( this.length()==0 ){
             throw new RuntimeException(
-                "Queue Error: back() called on empty Queue");
+                "List Error: back() called on empty List");
         }
         return back.data;
     }
@@ -93,7 +88,8 @@ public class List {
         if( this.length()==0 ){
             throw new RuntimeException(
                 "List Error: get() called on empty Queue");
-        }else if( this.index()<0 ){
+        }
+        if( this.index()<0 ){
             throw new RuntimeException(
                 "List Error: get() called on undefined cursor position");
         }
@@ -110,6 +106,7 @@ public class List {
     // Manipulation procedures
     // ----------------------------------------------------------------------
 
+
     // Resets this List to its original empty state.
     // Pre: none
     public void clear(){
@@ -119,10 +116,6 @@ public class List {
         numElements = 0;
         index = -1;
     }
-
-    //-------------------------
-    // cursor
-    //-------------------------
 
     // If List is non-empty, places the cursor under the front element,
     // otherwise does nothing.
@@ -148,9 +141,18 @@ public class List {
     // front of this List, if cursor is defined and at front, cursor becomes
     // undefined, if cursor is undefined does nothing.
     // Pre: none
-    //void movePrev();
-        //index--;
-
+    public void movePrev(){
+        if( cursor!=null && cursor!=front ){
+            cursor = cursor.prev;
+            index--;
+        }else if( cursor!=null && cursor==front ){
+            cursor = null;
+            index = -1;
+        }else if ( cursor==null ){
+            cursor = null;
+            index = -1;
+        }
+    }
 
     // If cursor is defined and not at back, moves cursor one step toward
     // back of this List, if cursor is defined and at back, cursor becomes
@@ -169,12 +171,6 @@ public class List {
         }
     }
 
-
-
-    //-------------------------
-    // Insert
-    //-------------------------
-
     // Insert new element into this List. If List is non-empty,
     // insertion takes place before front element.
     // Pre: none
@@ -183,7 +179,7 @@ public class List {
         if( numElements==0 ){
             front = C;
             back = C;
-        }else {
+        }else{
             front.prev = C;
             C.next = front;
             front = C;
@@ -194,7 +190,18 @@ public class List {
     // Insert new element into this List. If List is non-empty,
     // insertion takes place after back element.
     // Pre: none
-    //void append(int data);
+    public void append(int data){
+        Node C = new Node(data);
+        if( numElements==0 ){
+            front = C;
+            back = C;
+        }else{
+            back.next = C;
+            C.prev = back;
+            back = C;
+        }
+        numElements++;
+    }
 
     // Insert new element before cursor.
     // Pre: length()>0, index()>=0
@@ -202,7 +209,8 @@ public class List {
         if( this.length()==0 ){
             throw new RuntimeException(
                 "List Error: insertBefore() called on empty list");
-        }else if( this.index()<0 ){
+        }
+        if( this.index()<0 ){
             throw new RuntimeException(
                 "List Error: insertBefore() called on undefined cursor position");
         }
@@ -230,7 +238,8 @@ public class List {
         if( this.length()==0 ){
             throw new RuntimeException(
                 "List Error: insertBefore() called on empty list");
-        }else if( this.index()<0 ){
+        }
+        if( this.index()<0 ){
             throw new RuntimeException(
                 "List Error: insertBefore() called on undefined cursor position");
         }
@@ -240,7 +249,6 @@ public class List {
             cursor.next = C;
             C.prev = cursor;
             back = C;
-            numElements++;
         }else {
             Node P = cursor.next;
             cursor.next = C;
@@ -251,25 +259,66 @@ public class List {
         numElements++;
     }
 
-
-
-
-
-    //-------------------------
-    // Delete
-    //-------------------------
-
     // Deletes the front element.
     // Pre: length()>0
-    //void deleteFront();
+    public void deleteFront(){
+        if( this.length()==0 ){
+            throw new RuntimeException(
+                "List Error: deleteFront() called on empty list");
+        }
+        if( cursor==front ){
+            cursor = cursor.next;
+        }
+        front = front.next;
+        front.prev = null;
+        index--;
+        numElements--;
+    }
 
     // Deletes the back element.
     // Pre: length()>0
-    //void deleteBack();
+    public void deleteBack(){
+        if( this.length()==0 ){
+            throw new RuntimeException(
+                "List Error: deleteBack() called on empty list");
+        }
+        if( cursor==back ){
+            cursor = cursor.prev;
+            index--;
+        }
+        back = back.prev;
+        back.next = null;
+        numElements--;
+    }
 
     // Deletes cursor element, making cursor undefined.
     // Pre: length()>0, index()>=0
-    //void delete();
+    public void delete(){
+        if( this.length()==0 ){
+            throw new RuntimeException(
+                "List Error: delete() called on empty list");
+        }
+        if ( this.index()<0 ){
+            throw new RuntimeException(
+                "List Error: delete() called on invalid cursor position");
+        }
+        if( cursor==front ){
+            front = front.next;
+            front.prev = null;
+            cursor = null;
+        }
+        if( cursor==back ){
+            back = back.prev;
+            back.next = null;
+            cursor = null;
+        }
+        cursor.prev.next = cursor.next;
+        cursor.next.prev = cursor.prev;
+        cursor = null;
+
+        index = -1;
+        numElements--;
+    }
 
 
     // ----------------------------------------------------------------------
@@ -281,7 +330,18 @@ public class List {
     // representation of this List consisting of a space
     // separated sequence of integers, with front on left.
     // Pre: none
-    //public String toString();
+    public String toString(){
+        StringBuffer sb = new StringBuffer();
+        Node N = front;
+        int data;
+        while(N!=null){
+            data = N.data;
+            sb.append(data);
+            sb.append(" ");
+            N = N.next;
+        }
+        return new String(sb);
+    }
 
     // Returns a new List representing the same integer sequence as this
     // List. The cursor in the new list is undefined, regardless of the
