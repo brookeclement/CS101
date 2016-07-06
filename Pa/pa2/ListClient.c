@@ -8,7 +8,7 @@
 #include"List.h"
 
 int main(int argc, char* argv[]){
-   
+
    List A = newList();
    List B = newList();
    List C = NULL;
@@ -19,9 +19,9 @@ int main(int argc, char* argv[]){
       prepend(B,i);
    }
 
-   printList(stdout,A); 
+   printList(stdout,A);
    printf("\n");
-   printList(stdout,B); 
+   printList(stdout,B);
    printf("\n");
 
    for(moveFront(A); index(A)>=0; moveNext(A)){

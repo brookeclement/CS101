@@ -1,0 +1,35 @@
+//-----------------------------------------------------------------------------
+//  README
+//  Christopher S. Gradwohl
+//  cgradwoh
+//  pa1
+//  README file for pa1
+//-----------------------------------------------------------------------------
+
+Table of Contents
+    1.  List.java
+    2.  ListClient.java
+    3.  Lex.java
+    4.  Makefile
+    5.  README
+
+Notes to Grader
+    1. List.java
+        List.java creates a List module with the exact specifications from the Pa1 document.
+
+    2. ListClient.java
+        ListClient.java is a test client provided by P. Tantalo for the purposes of testing
+        our ListADT module.
+
+    3. Lex.java
+        Lex.java is a client of List.java and uses List.java services to sort an input file in
+        alphabetical order. First the user gives a command line argument corresponding to a text
+        file. Then, Lex.java reads the input file, stores the input file as one string, then copies
+        each line into and index in a string array. Once the string array is obtained, Lex.java
+        uses the List Object from List.java to indirectly sort the string array, by sorting is indicies.
+        I based the sorting algorithm for Lex.java on InsertionSort(). Finally Lex.java prints
+        the sorted output to the file specified by the second command line argument, which was
+        also provide by the user.
+
+    4. Makefile
+        The Makefile for pa1 was given by P. Tantalo, and is unaltered from its original form.

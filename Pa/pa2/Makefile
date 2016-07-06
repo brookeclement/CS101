@@ -22,4 +22,3 @@ List.o : List.c List.h
 
 clean :
 	rm -f Lex ListClient Lex.o ListClient.o List.o
- 

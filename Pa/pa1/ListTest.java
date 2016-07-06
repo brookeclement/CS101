@@ -14,7 +14,7 @@ public class ListTest {
 
 
         // Format: after each manipulation procedure I will call ALL access functions
-        List myList = new List();
+        /*List myList = new List();
 
         //Acess function block
         System.out.println();
@@ -156,8 +156,20 @@ public class ListTest {
         //System.out.println("back(): " + myList.back());
         //System.out.println("get(): " + myList.get());
         System.out.println("toString(): " + myList);
-        System.out.println();
+        System.out.println();*/
 
+
+        List A = new List();
+        for( int i = 1; i<=20; i++ ){
+            A.append(i);
+        }
+        List C = A.copy();
+
+        System.out.println(A);
+        System.out.println(C);
+        System.out.println(A.equals(C));
+
+    
 
 
     }

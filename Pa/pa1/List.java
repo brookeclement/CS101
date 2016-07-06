@@ -3,7 +3,7 @@
 //  Christopher S. Gradwohl
 //  cgradwoh
 //  pa1
-//  ListADT for Lex.java using a doubley linked queue
+//  ListADT for the Lex.java client using a doubley linked list
 //-----------------------------------------------------------------------------
 
 
@@ -11,6 +11,7 @@ public class List {
 
 
     private class Node {
+
         // fields for private Node class
         int data;
         Node prev;
@@ -22,11 +23,23 @@ public class List {
             prev = null;
             next = null;
         }
+
+        public boolean equals(Object x){
+           boolean eq = false;
+           Node that;
+           if(x instanceof Node){
+              that = (Node) x;
+              eq = (this.data==that.data);
+           }
+           return eq;
+        }
+
     }
 
     // ----------------------------------------------------------------------
     // Fields
     // ----------------------------------------------------------------------
+
     private Node front;
     private Node back;
     private Node cursor;
@@ -43,11 +56,9 @@ public class List {
         index = -1;
     }
 
-
     // ----------------------------------------------------------------------
     // Access functions
     // ----------------------------------------------------------------------
-
 
     // Returns the number of elements in this List.
     // Pre: none
@@ -77,7 +88,7 @@ public class List {
     public int back() {
         if( this.length()==0 ){
             throw new RuntimeException(
-                "List Error: back() called on empty List");
+                "List Error: back() called on empty list");
         }
         return back.data;
     }
@@ -87,7 +98,7 @@ public class List {
     public int get() {
         if( this.length()==0 ){
             throw new RuntimeException(
-                "List Error: get() called on empty Queue");
+                "List Error: get() called on empty list");
         }
         if( this.index()<0 ){
             throw new RuntimeException(
@@ -99,13 +110,28 @@ public class List {
     // Returns true if this List and L are the same integer
     // sequence. The cursor is ignored in both lists.
     // Pre: none
-    //boolean equals(List L);
+    public boolean equals(Object x){
+        boolean eq = false;
+        List L;
+        Node N, M;
 
+        if(x instanceof List){
+            L = (List)x;
+            N = this.front;
+            M = L.front;
+            eq = (this.numElements==L.numElements);
+            while( eq && N!=null ){
+                eq = N.equals(M);
+                N = N.next;
+                M = M.next;
+            }
+        }
+        return eq;
+    }
 
     // ----------------------------------------------------------------------
     // Manipulation procedures
     // ----------------------------------------------------------------------
-
 
     // Resets this List to its original empty state.
     // Pre: none
@@ -206,7 +232,7 @@ public class List {
     // Insert new element before cursor.
     // Pre: length()>0, index()>=0
     public void insertBefore(int data){
-        if( this.length()==0 ){
+        if( this.length()<=0 ){
             throw new RuntimeException(
                 "List Error: insertBefore() called on empty list");
         }
@@ -223,9 +249,14 @@ public class List {
         }else {
             Node P = cursor.prev;
 
-            P.next = C;
+            /*P.next = C;
             cursor.prev = C;
             C.prev = P;
+            C.next = cursor;*/
+
+            cursor.prev.next = C;
+            cursor.prev = C;
+            C.prev = cursor.prev;
             C.next = cursor;
         }
         index++;
@@ -237,11 +268,11 @@ public class List {
     public void insertAfter(int data){
         if( this.length()==0 ){
             throw new RuntimeException(
-                "List Error: insertBefore() called on empty list");
+                "List Error: insertAfter() called on empty list");
         }
         if( this.index()<0 ){
             throw new RuntimeException(
-                "List Error: insertBefore() called on undefined cursor position");
+                "List Error: insertAfter() called on undefined cursor position");
         }
 
         Node C = new Node(data);
@@ -250,11 +281,16 @@ public class List {
             C.prev = cursor;
             back = C;
         }else {
-            Node P = cursor.next;
+            /*Node P = cursor.next;
             cursor.next = C;
             P.prev = C;
             C.prev = cursor;
-            C.next = P;
+            C.next = P;*/
+
+            cursor.next = C;
+            cursor.next.prev = C;
+            C.prev = cursor;
+            C.next = cursor.next;
         }
         numElements++;
     }
@@ -278,7 +314,7 @@ public class List {
     // Deletes the back element.
     // Pre: length()>0
     public void deleteBack(){
-        if( this.length()==0 ){
+        if( this.length()<=0 ){
             throw new RuntimeException(
                 "List Error: deleteBack() called on empty list");
         }
@@ -294,7 +330,7 @@ public class List {
     // Deletes cursor element, making cursor undefined.
     // Pre: length()>0, index()>=0
     public void delete(){
-        if( this.length()==0 ){
+        if( this.length()<=0 ){
             throw new RuntimeException(
                 "List Error: delete() called on empty list");
         }
@@ -320,11 +356,9 @@ public class List {
         numElements--;
     }
 
-
     // ----------------------------------------------------------------------
     // Other methods
     // ----------------------------------------------------------------------
-
 
     // Overrides Object's toString method. Returns a String
     // representation of this List consisting of a space
@@ -347,7 +381,16 @@ public class List {
     // List. The cursor in the new list is undefined, regardless of the
     // state of the cursor in this List. This List is unchanged.
     // Pre: none
-    //List copy();
+    List copy(){
+        List L = new List();
+        Node N = this.front;
+
+        while( N!=null ){
+            L.append(N.data);
+            N = N.next;
+        }
+        return L;
+    }
 
     // The following operation is optional, and may come in handy in some future assignment:
     // Returns a new List which is the concatenation of
@@ -356,5 +399,6 @@ public class List {
     // in this List and L. The states of this List and L are
     // unchanged.
     //List concat(List L);
+
 
 }
