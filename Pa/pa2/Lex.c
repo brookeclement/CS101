@@ -1,10 +1,10 @@
-//---------------------------------------------------------------------
-// Christopher S. Gradwohl
-// charTest.c
-// tests the functionality of type char**
-// practice allocating and freeing memory when using type char**
-// practice reading a file into a string array
-//---------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//  Lex.c
+//  Christopher S. Gradwohl
+//  cgradwoh
+//  pa2
+//  ListADT client that sorts the lines of an input file
+//-----------------------------------------------------------------------------
 
 #include <stdlib.h>
 #include <string.h>

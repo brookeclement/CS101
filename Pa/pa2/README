@@ -1,0 +1,38 @@
+//-----------------------------------------------------------------------------
+//  README
+//  Christopher S. Gradwohl
+//  cgradwoh
+//  pa2
+//-----------------------------------------------------------------------------
+
+Table of Contents
+
+    1.  Lex.c
+    2.  List.c
+    3.  List.h
+    4.  ListClient.c
+    5.  Makefile
+    6.  README
+
+Notes to the Grader:
+
+    1.  Lex.c
+        Lex.c sorts the lines of a specified input file, obtained by the
+        users command line argument. Lex.c is a List.c client program.
+
+    2.  List.c
+        List.c is bidirectional queue ADT that fits the exact specifications
+        from pa2.
+
+    3.  List.h
+        List.h is the List ADT header file, which is used to export List.c
+        services to the client program Lex.c
+
+    4.  ListClient.c
+        ListClient.c is a test client for the List.c ADT and it is written by
+        P. Tantalo.
+
+    5.  Makefile
+        A makefile given and written by P. Tantalo
+
+    6.  README
