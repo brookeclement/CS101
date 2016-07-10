@@ -73,9 +73,7 @@ List newList(void){
 // frees the heap memory pointed to by *pL, then sets *pL to NULL
 void freeList(List* pL){
     if( *pL!=NULL && pL!=NULL ){
-        while( length(*pL)>0 ){
-            deleteFront(*pL);       // have to make deleteFront perfrom front = front.next;
-        }
+        clear(*pL);
         free(*pL);
         *pL = NULL;
     }
@@ -98,7 +96,7 @@ int length(List L){
 // If cursor is defined, returns the index of the cursor element,
 // otherwise returns -1.
 // Pre: none
-int index(List L){
+int getindex(List L){
     if( L==NULL ){
         printf("List Error: cannot call index() on NULL List referenece\n");
         exit(1);
@@ -141,7 +139,7 @@ int get(List L){
         printf("List Error: cannot call get() on NULL List referenece\n");
         exit(1);
     }
-    if ( L->length<=0 ){
+    if ( L->length==0 ){
         printf("List Error: cannot call get() on empty List\n");
         exit(1);
     }
@@ -187,7 +185,9 @@ void clear(List L){
         printf("List Error: calling clear() on NULL List reference");
         exit(1);
     }
-
+    while( L->front!=NULL ){
+        deleteFront(L);
+    }
     //Function clear() should have a loop that calls deleteFront() or
     // deleteBack() while the list is not empty.
 
@@ -284,6 +284,7 @@ void prepend(List L, int data){
         L->front->prev = N;
         N->next = L->front;
         L->front = N;
+        L->index++;
     }
     L->length++;
 
@@ -458,7 +459,6 @@ void delete(List L){
 // ---------------------------
 
 void printList(FILE* out, List L){
-//void printList(List L)
     Node N = NULL;
 
     if( L==NULL ){
@@ -467,7 +467,7 @@ void printList(FILE* out, List L){
     }
 
     for(N = L->front; N != NULL; N = N->next){
-        printf("%d ", N->data);
+        fprintf(out, "%d ", N->data);
     }
 }
 

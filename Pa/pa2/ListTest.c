@@ -11,22 +11,17 @@
 
 int main(int argc, char* argv[]){
     List L = newList();
-    append(L, 1);
-    append(L, 2);
-    append(L, 3);
-    append(L, 4);
-
-    List M = newList();
-    append(M, 1);
-    append(M, 2);
-    append(M, 3);
-    append(M, 4);
-
-    printf("length of list: %d\n", length(L));
-    printf("index position: %d\n", index(L));
-    printf("front element: %d\n", front(L));
-    printf("back element: %d\n", back(L));
-    //printf("get cursor element: %d\n", get(L));
-    printf("List L ?= List M: %d\n", equals(L, M));
-
+    append(L,5);
+    append(L,6);
+    append(L,7);
+    moveFront(L);
+    fprintf(stdout, "getindex()= %d", getindex(L));
+    moveNext(L);
+    fprintf(stdout, "getindex()= %d", getindex(L));
+    moveNext(L);
+    fprintf(stdout, "getindex()= %d", getindex(L));
+    moveNext(L);
+    fprintf(stdout, "getindex()= %d", getindex(L));
+    moveNext(L);
+    fprintf(stdout, "getindex()= %d", getindex(L));
 }
