@@ -18,13 +18,14 @@ public class List {
         Node prev;
         Node next;
 
-        // constructor
+        // Node Constructor
         Node(Object entry) {
             data = entry;
             prev = null;
             next = null;
         }
 
+        // methods for private Node class
         @SuppressWarnings("unchecked")
         public boolean equals(Object x){
            boolean eq = false;
@@ -48,7 +49,7 @@ public class List {
     private int length;
     private int index;
 
-    // Constructor
+    // List Constructor
     // Creates a new empty list.
     List() {
         front  = null;
