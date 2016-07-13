@@ -28,14 +28,22 @@ public class List {
         // methods for private Node class
         @SuppressWarnings("unchecked")
         public boolean equals(Object x){
-           boolean eq = false;
-           Node that;
-           if(x instanceof Node){
-              that = (Node) x;
-              eq   = (this.data==that.data);
-           }
-           return eq;
+            boolean eq = false;
+            Node that;
+            if(x instanceof Node){
+                that = (Node) x;
+                // calls ENTRY equals()?????
+                eq   = (this.data.equals(that.data));
+            }
+            return eq;
         }
+
+        public String toString(){
+            return data.toString();
+        }
+
+
+
 
     }
 
@@ -358,12 +366,9 @@ public class List {
     public String toString(){
         StringBuffer sb = new StringBuffer();
         Node N          = front;
-        Object data;
         while(N!=null){
-            data = N.data;
-            sb.append(data);
-            sb.append(" ");
-            N    = N.next;
+            sb.append(N.data).append(" ");
+            N = N.next;
         }
         return new String(sb);
     }
