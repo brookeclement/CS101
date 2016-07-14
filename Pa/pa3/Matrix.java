@@ -98,22 +98,21 @@ public class Matrix{
             throw new RuntimeException(
                 "Matrix Error: changeEntry() called on undefined column");
         }
-        int k;
+
         Entry C;
-        // when rewriting the general changeEntry() wait to declare E
-        Entry E = new Entry(j, x);
+        Entry E = new Entry(j, x);// when rewriting the general changeEntry() wait to declare E
         List L  = row[i];
 
         L.moveFront();
         while( L.index()!=-1 ){
             C = (Entry) L.get();
-            if(E.column<C.column) break;
+            if(j<C.column) break;
             L.moveNext();
         }
         if( L.index()==-1 ) L.append(E);
         else L.insertBefore(E);
 
-        // only certain cases will increment nnz 
+        // only certain cases will increment nnz
         nnz++;
     }
 
