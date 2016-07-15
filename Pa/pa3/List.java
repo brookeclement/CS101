@@ -304,10 +304,14 @@ public class List {
         if( cursor==front ){
             cursor = cursor.next;
         }
-        front      = front.next;
-        front.prev = null;
-        index--;
-        length--;
+        if( length==1 ){
+            clear();
+        }else {
+            front      = front.next;
+            front.prev = null;
+            index--;
+            length--;
+        }
     }
 
     // Deletes the back element.
@@ -338,21 +342,17 @@ public class List {
                 "List Error: delete() called on invalid cursor position");
         }
         if( cursor==front ){
-            front      = front.next;
-            front.prev = null;
-            cursor     = null;
+            deleteFront();
+        }else if( cursor==back ){
+            deleteBack();
+        }else {
+            index = -1;
+            length--;
+            cursor.next.prev = cursor.prev;
+            cursor.prev.next = cursor.next;
+            cursor           = null;
         }
-        if( cursor==back ){
-            back      = back.prev;
-            back.next = null;
-            cursor    = null;
-        }
-        cursor.prev.next = cursor.next;
-        cursor.next.prev = cursor.prev;
-        cursor           = null;
 
-        index = -1;
-        length--;
     }
 
     // ----------------------------------------------------------------------

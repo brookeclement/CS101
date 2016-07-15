@@ -90,30 +90,46 @@ public class Matrix{
     // changes ith row, jth column of this Matrix to x
     // pre: 1<=i<=getSize(), 1<=j<=getSize()
     void changeEntry(int i, int j, double x){
-        if( 1>i || i>size ){
+        if( 1>i || i>this.size ){
             throw new RuntimeException(
                 "Matrix Error: changeEntry() called on undefined row");
         }
-        if( 1>j || j>size ){
+        if( 1>j || j>this.size ){
             throw new RuntimeException(
                 "Matrix Error: changeEntry() called on undefined column");
         }
 
         Entry C;
-        Entry E = new Entry(j, x);// when rewriting the general changeEntry() wait to declare E
+        Entry E = new Entry(j, x);
         List L  = row[i];
 
         L.moveFront();
         while( L.index()!=-1 ){
             C = (Entry) L.get();
-            if(j<C.column) break;
+            if( j==C.column ){
+                if( x!=0.0 ){
+                    C.value = x;
+                    break;
+                }else{
+                    L.delete();
+                    nnz--;
+                    break;
+                }
+            }
+            else if( j<C.column ) break;
             L.moveNext();
         }
-        if( L.index()==-1 ) L.append(E);
-        else L.insertBefore(E);
 
-        // only certain cases will increment nnz
-        nnz++;
+        if( L.index()==-1 && x!=0.0 ) {
+            L.append(E);
+            nnz++;
+        }else if( x!=0.0 ) {
+            C = (Entry) L.get();
+            if( j!=C.column ){
+                L.insertBefore(E);
+                nnz++;
+            }
+        }
     }
 
     // returns a new Matrix having the same entries as this Matrix
@@ -131,11 +147,50 @@ public class Matrix{
     /*Matrix sub(Matrix M);*/
 
     // returns a new Matrix that is the transpose of this Matrix
-    /*Matrix transpose();*/
+    Matrix transpose(){
+        int i, j, k;        double x;
+        List L;             Entry C;
+
+        Matrix that = new Matrix(this.size);
+
+        for( k=1; k<=this.size; k++){
+            L = this.row[k];
+            L.moveFront();
+
+            while( L.index()!=-1 ){
+                C = (Entry) L.get();
+                i = C.column;
+                j = k;
+                x = C.value;
+
+                that.changeEntry(i, j, x);
+                L.moveNext();
+            }
+        }
+        return that;
+    }
 
     // returns a new Matrix that is the product of this Matrix with M
     // pre: getSize()==M.getSize()
-    /*Matrix mult(Matrix M);*/
+    Matrix mult(Matrix M){
+        if( this.size!=M.getSize() ){
+            throw new RuntimeException(
+                "Matrix Error: mult() called on incompatible Matricies");
+        }
+        int i, j;
+
+        Matrix that = M.transpose();
+        Matrix N    = new Matrix(this.size);
+
+        for( i=1; i<=this.size; i++ ){
+            for( j=1; j<=this.size; j++){
+
+                N.changeEntry(i, j, dot(this.row[i], that.row[j]));
+
+            }
+        }
+        return N;
+    }
 
 
     // ----------------------------------------------------------------------
@@ -154,5 +209,27 @@ public class Matrix{
         return new String(sb);
     }
 
+    // computes the vector dot product of two matrix rows represented
+    // by Lists P and Q.
+    // pre: none
+    private static double dot(List P, List Q){
+        double dotProduct = 0.0;
+
+        Entry pCursor;          Entry qCursor;
+        P.moveFront();          Q.moveFront();
+
+        if( P.index()==-1 || Q.index()==-1) return 0.0;
+
+        else while( P.index()!=-1 && Q.index()!=-1 ){
+            pCursor    = (Entry) P.get();
+            qCursor    = (Entry) Q.get();
+            dotProduct = dotProduct + (pCursor.value * qCursor.value);
+
+            P.moveNext();
+            Q.moveNext();
+        }
+
+        return dotProduct;
+    }
 
 }
