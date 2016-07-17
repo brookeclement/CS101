@@ -223,10 +223,12 @@ public class Matrix{
         else while( P.index()!=-1 && Q.index()!=-1 ){
             pCursor    = (Entry) P.get();
             qCursor    = (Entry) Q.get();
-            dotProduct = dotProduct + (pCursor.value * qCursor.value);
-
-            P.moveNext();
-            Q.moveNext();
+            if( pCursor.column == qCursor.column ){
+                dotProduct = dotProduct + (pCursor.value * qCursor.value);
+                P.moveNext();
+                Q.moveNext();
+            }else if( pCursor.column>qCursor.column ) Q.moveNext();
+            else if ( pCursor.column<qCursor.column ) P.moveNext();
         }
 
         return dotProduct;

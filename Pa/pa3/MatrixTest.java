@@ -14,18 +14,23 @@ public class MatrixTest{
         Matrix A = new Matrix(2);
         Matrix B = new Matrix(2);
 
-        A.changeEntry(1,1,1);
-        A.changeEntry(1,2,2);
-        A.changeEntry(2,1,3);
+        A.changeEntry(1,1,3);
+        A.changeEntry(1,2,0);
+        A.changeEntry(2,1,0);
         A.changeEntry(2,2,4);
+        System.out.println("Matrix A:");
+        System.out.println(A);
 
-        B.changeEntry(1,1,5);
-        B.changeEntry(1,2,6);
-        B.changeEntry(2,1,7);
-        B.changeEntry(2,2,8);
+        B.changeEntry(1,1,3);
+        B.changeEntry(1,2,0);
+        B.changeEntry(2,1,0);
+        B.changeEntry(2,2,4);
+        System.out.println("Matrix B:");
+        System.out.println(B);
 
         Matrix C = A.mult(B);
 
+        System.out.println("Matrix A*B:");
         System.out.println(C);
 
 
