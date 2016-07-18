@@ -136,15 +136,59 @@ public class Matrix{
     /*Matrix copy();*/
 
     // returns a new Matrix that is the scalar product of this Matrix with x
-    /*Matrix scalarMult(double x);*/
+    Matrix scalarMult(double x){
+        int i;
+        List thisRow;           Entry thisEntry;
+        Matrix that = new Matrix(this.size);
+
+        for( i=1; i<=this.size; i++ ){
+            thisRow = this.row[i];
+            thisRow.moveFront();
+
+            while( thisRow.index()!=-1 ){
+                thisEntry = (Entry) thisRow.get();
+                thisEntry.value = x*thisEntry.value;
+                thisRow.moveNext();
+            }
+            that.row[i] = thisRow;
+        }
+        return that;
+    }
 
     // returns a new Matrix that is the sum of this Matrix with M
     // pre: getSize()==M.getSize()
-    /*Matrix add(Matrix M);*/
+    Matrix add(Matrix M){
+        if( this.size!=M.getSize() ){
+            throw new RuntimeException(
+                "Matrix Error: add() called on undefined Matrix size");
+        }
+        int i;
+        List thisList, thatList;
+        Matrix N = new Matrix(this.size);
+
+        for( i=1; i<=this.size; i++ ){
+            thisList = this.row[i];
+            thatList = M.row[i];
+            N.row[i] = rowAdd(thisList, thatList);
+        }
+        return N;
+    }
+
 
     // returns a new Matrix that is the difference of this Matrix with M
     // pre: getSize()==M.getSize()
-    /*Matrix sub(Matrix M);*/
+    Matrix sub(Matrix M){
+        if( this.size!=M.getSize() ){
+            throw new RuntimeException(
+                "Matrix Error: sub() called on incompatible Matricies.");
+        }
+        M.scalarMult(-1);
+        Matrix that = new Matrix(this.size);
+
+        if( this==M ) return that;
+        else that   = this.add(M);
+        return that;
+    }
 
     // returns a new Matrix that is the transpose of this Matrix
     Matrix transpose(){
@@ -232,6 +276,61 @@ public class Matrix{
         }
 
         return dotProduct;
+    }
+
+    // adds two Entry Lists together
+    // pre: none
+    private List rowAdd(List P, List Q){
+        List R = new List();
+
+        Entry pCursor;          Entry qCursor;
+        P.moveFront();          Q.moveFront();
+
+
+
+        while( P.index()!=-1 && Q.index()!=-1 ){
+            pCursor     = (Entry) P.get();
+            qCursor     = (Entry) Q.get();
+
+            if( pCursor.column == qCursor.column ){
+
+                Entry rCursor = new Entry(pCursor.column, pCursor.value+qCursor.value);
+                R.append(rCursor);
+                P.moveNext();
+                Q.moveNext();
+
+            }else if( pCursor.column>qCursor.column ){
+
+                Entry rCursor = new Entry(qCursor.column, qCursor.value);
+                R.append(rCursor);
+                Q.moveNext();
+
+            }else if( pCursor.column<qCursor.column ){
+
+                Entry rCursor = new Entry(pCursor.column, pCursor.value);
+                R.append(rCursor);
+                P.moveNext();
+            }
+        }
+
+        while( P.index()!=-1 || Q.index()!=-1 ){
+
+            if( P.index()!=-1 ){
+
+                pCursor       = (Entry) P.get();
+                Entry rCursor = new Entry(pCursor.column, pCursor.value);
+                R.append(rCursor);
+                P.moveNext();
+
+            }else if ( Q.index()!=-1 ){
+
+                qCursor       = (Entry) Q.get();
+                Entry rCursor = new Entry(qCursor.column, qCursor.value);
+                R.append(rCursor);
+                Q.moveNext();
+            }
+        }
+        return R;
     }
 
 }
