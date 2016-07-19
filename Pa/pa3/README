@@ -15,3 +15,25 @@ Table of Contents
     7.  README
 
 Notes to Grader
+    1. Sparse.java is a MatrixADT client that takes two command line arguments from the user.
+    The first command line argument is reference to a formatted text file that gives information
+    about two sparse matrices. Sparse then creates these two matrices, and performs some basic
+    Matrix arithmetic on the two matrices, prints the results to the output file as specified
+    by the second command line argument, given by the user.
+
+    2. Matrix.java is a MatrixADT created to exploit the properties of sparse matrices. It does
+    so by using an array of List Entry objects, who hold the value of non zero entries in the
+    matrix.
+
+    3. List.java is a ListADT of Node objects, where each Node has a data field of type Object.
+    The List is indexed and contains a cursor feature to get data from the data field.
+
+    4. MatrixTest.java is a MatrixADT test client used to test the proper functionality of the
+    MatrixADT. Simply uncomment blocks of code to verify the given operations work as specified.
+
+    5. ListTest.java is a ListADT test client used to test the Object functionality of the
+    Node.data field of the List.
+
+    6. The makefile used was given by P Tantalo for purposes of pa3.
+
+    

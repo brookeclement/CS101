@@ -11,9 +11,7 @@ import java.io.*;
 public class MatrixTest{
     public static void main(String[] args) throws IOException {
 
-
-
-        Matrix A = new Matrix(3);
+        /*Matrix A = new Matrix(3);
         A.changeEntry(1, 1, 1);
         A.changeEntry(1, 2, 2);
         A.changeEntry(1, 3, 3);
@@ -53,12 +51,7 @@ public class MatrixTest{
 
         B.makeZero();
         System.out.println("Matrix B( makeZero() test ):");
-        System.out.println(B);
-
-
-
-
-
+        System.out.println(B);*/
 
 
         /*Matrix A = new Matrix(3);
@@ -103,29 +96,6 @@ public class MatrixTest{
         System.out.println(D);*/
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         /*Matrix A = new Matrix(2);
         Matrix B = new Matrix(2);
 
@@ -147,13 +117,6 @@ public class MatrixTest{
 
         System.out.println("Matrix A*B:");
         System.out.println(C);*/
-
-
-
-
-
-
-
 
 
         /*Matrix A = new Matrix(3);

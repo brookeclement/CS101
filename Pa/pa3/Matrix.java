@@ -229,11 +229,11 @@ public class Matrix{
             throw new RuntimeException(
                 "Matrix Error: sub() called on incompatible Matricies.");
         }
-        M.scalarMult(-1);
+
         Matrix that = new Matrix(this.size);
 
         if( this==M ) return that;
-        else that   = this.add(M);
+        else that   = this.add(M.scalarMult(-1));
         return that;
     }
 
@@ -339,11 +339,15 @@ public class Matrix{
 
             if( pCursor.column == qCursor.column ){
 
-                Entry rCursor = new Entry(pCursor.column, pCursor.value+qCursor.value);
-                R.append(rCursor);
-                P.moveNext();
-                Q.moveNext();
-
+                if( pCursor.value+qCursor.value==0 ){
+                    P.moveNext();
+                    Q.moveNext();
+                }else{
+                    Entry rCursor = new Entry(pCursor.column, pCursor.value+qCursor.value);
+                    R.append(rCursor);
+                    P.moveNext();
+                    Q.moveNext();
+                }
             }else if( pCursor.column>qCursor.column ){
 
                 Entry rCursor = new Entry(qCursor.column, qCursor.value);
