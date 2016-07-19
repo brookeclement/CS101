@@ -30,7 +30,7 @@ public class List {
         public boolean equals(Object x){
             boolean eq = false;
             Node that;
-            if(x instanceof Node){
+            if( x instanceof Node ){
                 that = (Node) x;
                 // calls ENTRY equals()?????
                 eq   = (this.data.equals(that.data));

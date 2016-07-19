@@ -27,6 +27,7 @@ public class Matrix{
         public boolean equals(Object x){
             boolean eq = false;
             Entry that;
+
             if(x instanceof Entry){
                that = (Entry) x;
                eq   = (this.column==that.column && this.value==that.value);
@@ -39,9 +40,11 @@ public class Matrix{
         }
     }
 
+
     // ----------------------------------------------------------------------
     // Fields
     // ----------------------------------------------------------------------
+
 
     private List[] row;
     private int size;
@@ -55,15 +58,19 @@ public class Matrix{
             throw new RuntimeException(
                 "Matrix Error: Matrix size must be greater than or equal to 1");
         }
-        row = new List[n+1];
-        for( int i=1; i<=n; i++ ) row[i] = new List();
-        size = n;
-        nnz  = 0;
+
+        this.size = n;
+        this.nnz  = 0;
+        this.row  = new List[n+1];
+
+        for( int i=1; i<=n; i++ ) this.row[i] = new List();
     }
+
 
     // ----------------------------------------------------------------------
     // Access Functions
     // ----------------------------------------------------------------------
+
 
     // Returns n, the number of rows and columns of this Matrix
     int getSize(){
@@ -76,16 +83,42 @@ public class Matrix{
     }
 
     // overrides Object's equals() method
-    /*@SuppressWarnings("unchecked")
-    public boolean equals(Object x);*/
+    @SuppressWarnings("unchecked")
+    public boolean equals(Object x){
+        int i;
+        Matrix that;
+        boolean eq = false;
+
+        if(x instanceof Matrix){
+
+            that = (Matrix) x;
+
+            if( this.size!=that.getSize() ) return eq;
+            if( this.nnz!=that.getNNZ() ) return eq;
+
+            for( i=1; i<=this.size; i++ ){
+                eq = ( this.row[i].equals(that.row[i]) );
+                if( !eq ) return eq;
+            }
+        }
+        return eq;
+    }
 
 
     // ----------------------------------------------------------------------
     // Manipulation Procedures
     // ----------------------------------------------------------------------
 
+
     // sets this Matrix to the zero state
-    /*void makeZero();*/
+    void makeZero(){
+        int i;
+
+        for( i=1; i<=this.size; i++ ){
+            this.row[i] = new List();
+        }
+        this.nnz = 0;
+    }
 
     // changes ith row, jth column of this Matrix to x
     // pre: 1<=i<=getSize(), 1<=j<=getSize()
@@ -133,25 +166,34 @@ public class Matrix{
     }
 
     // returns a new Matrix having the same entries as this Matrix
-    /*Matrix copy();*/
+    Matrix copy(){
+        Matrix that = new Matrix(this.size);
+        Matrix zero = new Matrix(this.size);
+
+        that        = this.add(zero);
+        return that;
+    }
 
     // returns a new Matrix that is the scalar product of this Matrix with x
     Matrix scalarMult(double x){
         int i;
-        List thisRow;           Entry thisEntry;
+        List thatRow;           Entry thatEntry;
+
         Matrix that = new Matrix(this.size);
+        that        = this.copy();
 
         for( i=1; i<=this.size; i++ ){
-            thisRow = this.row[i];
-            thisRow.moveFront();
+            thatRow = that.row[i];
+            thatRow.moveFront();
 
-            while( thisRow.index()!=-1 ){
-                thisEntry = (Entry) thisRow.get();
-                thisEntry.value = x*thisEntry.value;
-                thisRow.moveNext();
+            while( thatRow.index()!=-1 ){
+                thatEntry = (Entry) thatRow.get();
+                thatEntry.value = x*thatEntry.value;
+                thatRow.moveNext();
             }
-            that.row[i] = thisRow;
+            that.row[i] = thatRow;
         }
+        that.nnz = this.nnz;
         return that;
     }
 
@@ -162,15 +204,20 @@ public class Matrix{
             throw new RuntimeException(
                 "Matrix Error: add() called on undefined Matrix size");
         }
+
         int i;
         List thisList, thatList;
         Matrix N = new Matrix(this.size);
 
-        for( i=1; i<=this.size; i++ ){
-            thisList = this.row[i];
-            thatList = M.row[i];
-            N.row[i] = rowAdd(thisList, thatList);
+        if ( this==M ) return this.scalarMult(2);
+        else if( this!=M ){
+            for( i=1; i<=this.size; i++ ){
+                thisList = this.row[i];
+                thatList = M.row[i];
+                N.row[i] = rowAdd(thisList, thatList);
+            }
         }
+        N.nnz = this.nnz;
         return N;
     }
 
@@ -221,8 +268,8 @@ public class Matrix{
             throw new RuntimeException(
                 "Matrix Error: mult() called on incompatible Matricies");
         }
-        int i, j;
 
+        int i, j;
         Matrix that = M.transpose();
         Matrix N    = new Matrix(this.size);
 
@@ -286,8 +333,6 @@ public class Matrix{
         Entry pCursor;          Entry qCursor;
         P.moveFront();          Q.moveFront();
 
-
-
         while( P.index()!=-1 && Q.index()!=-1 ){
             pCursor     = (Entry) P.get();
             qCursor     = (Entry) Q.get();
@@ -330,6 +375,7 @@ public class Matrix{
                 Q.moveNext();
             }
         }
+
         return R;
     }
 

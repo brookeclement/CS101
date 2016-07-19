@@ -39,9 +39,24 @@ public class MatrixTest{
         System.out.println("Matrix B:");
         System.out.println(B);
 
-        Matrix C = A.sub(B);
-        System.out.println("A - B:");
+        Matrix C = A.copy();
+        System.out.println("Matrix A copy:");
         System.out.println(C);
+
+        Matrix D = new Matrix(3);
+        System.out.println("Matrix D:");
+        System.out.println(D);
+
+        Matrix E = D.copy();
+        System.out.println("Matrix E:");
+        System.out.println(E);
+
+        B.makeZero();
+        System.out.println("Matrix B( makeZero() test ):");
+        System.out.println(B);
+
+
+
 
 
 

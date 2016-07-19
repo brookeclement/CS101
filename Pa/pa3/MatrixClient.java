@@ -5,7 +5,7 @@
 
 public class MatrixClient{
    public static void main(String[] args){
-      /*int i, j, n=100000;
+      int i, j, n=10000;
       Matrix A = new Matrix(n);
       Matrix B = new Matrix(n);
 
@@ -48,12 +48,13 @@ public class MatrixClient{
       Matrix H = A.copy();
       System.out.println(H.getNNZ());
       System.out.println(H);
+
       System.out.println(A.equals(H));
       System.out.println(A.equals(B));
       System.out.println(A.equals(A));
 
       A.makeZero();
       System.out.println(A.getNNZ());
-      System.out.println(A);*/
+      System.out.println(A);
    }
 }
